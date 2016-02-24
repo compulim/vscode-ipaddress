@@ -46,6 +46,8 @@ function activate(context) {
       vscode.window.showQuickPick(
         entries
       ).then(entry => {
+        if (!entry) { return; }
+
         const address = entry.address;
 
         textEditor.edit(edit => {
