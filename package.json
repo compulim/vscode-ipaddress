@@ -1,17 +1,24 @@
 {
   "name": "vscode-ipaddress",
-  "displayName": "Shows and Inserts IP address",
-  "description": "Shows and inserts your IP address in Visual Studio Code",
+  "displayName": "IP Address",
+  "description": "Shows IP addresses in status bar and inserts into your text",
   "version": "0.0.1",
   "publisher": "Compulim",
   "engines": {
     "vscode": "^0.10.1"
   },
+  "icon": "icon.png",
+  "galleryBanner.color": "#0D5CAB",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/compulim/vscode-ipaddress.git"
+  },
+  "bugs": "https://github.com/compulim/vscode-ipaddress/issues/",
+  "homepage": "https://github.com/compulim/vscode-ipaddress/blob/master/README.md",
   "categories": [
     "Other"
   ],
   "activationEvents": [
-    "onCommand:ipAddress.insertIPAddress",
     "*"
   ],
   "main": "./extension",
