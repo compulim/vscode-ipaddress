@@ -1,4 +1,4 @@
-# IP Address extension for Visual Studio Code
+# IP address extension for Visual Studio Code
 This Visual Studio Code extension helps you to easily view your current IP address from status bar and inserts one into your text, including both IPv4 and IPv6 addresses across multiple active network interfaces.
 
 ![Demo showing how IP address show on status bar](https://raw.githubusercontent.com/compulim/vscode-ipaddress/master/demo-status-bar.gif)
