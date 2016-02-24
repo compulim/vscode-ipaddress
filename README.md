@@ -15,7 +15,7 @@ To insert IP address into the text,
 You can also modify keyboard shortcut with JSON below.
 ```
 {
-  "key": "alt+.",
+  "key": "alt+shift+i",
   "command": "ipAddress.insertIPAddress",
   "when": "editorTextFocus"
 }
