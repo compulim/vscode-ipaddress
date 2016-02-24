@@ -35,7 +35,8 @@ function activate(context) {
           .map(entry => {
             return {
               label: entry.address,
-              detail: `${entry.interfaceName} (${entry.family})`,
+              description: entry.family,
+              detail: entry.interfaceName,
               address: entry.address
             };
           })
