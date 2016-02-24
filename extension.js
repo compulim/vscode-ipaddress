@@ -44,7 +44,11 @@ function activate(context) {
           .toJS();
 
       vscode.window.showQuickPick(
-        entries
+        entries,
+        {
+          matchOnDescription: true,
+          matchOnDetail: true
+        }
       ).then(entry => {
         if (!entry) { return; }
 
