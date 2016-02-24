@@ -1,5 +1,7 @@
 'use strict';
 
+const AUTO_DHCP_PATTERN = /^169\.254\./;
+
 const Map = require('immutable').Map;
 
 function getNextInterfaceName(networkInterfaces, currentInterfaceName) {
@@ -38,6 +40,30 @@ function getAddresses(networkInterfaces, interfaceName) {
   return networkInterfaces.filter(networkInterface => networkInterface.interfaceName === interfaceName);
 }
 
+function sortNetworkInterfaces(networkInterfaces) {
+  return networkInterfaces.sort((x, y) => {
+    let
+      vx = x.family,
+      vy = y.family;
+
+    if (vx === vy) {
+      vx = x.address;
+      vy = y.address;
+
+      if (AUTO_DHCP_PATTERN.test(vx)) {
+        vx = '9' + vx;
+      }
+
+      if (AUTO_DHCP_PATTERN.test(vy)) {
+        vy = '9' + vy;
+      }
+    }
+
+    return vx > vy ? 1 : vx < vy ? -1 : 0;
+  });
+}
+
 module.exports.flattenNetworkInterfaces = flattenNetworkInterfaces;
 module.exports.getAddresses = getAddresses;
 module.exports.getNextInterfaceName = getNextInterfaceName;
+module.exports.sortNetworkInterfaces = sortNetworkInterfaces;

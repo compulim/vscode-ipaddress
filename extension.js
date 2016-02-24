@@ -3,6 +3,9 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 const
+  Commands = require('./commands'),
+  NetworkInterfaceUtil = require('./networkinterfaceutil'),
+  os = require('os'),
   vscode = require('vscode'),
   IPAddressStatusBarItem = require('./ipaddressstatusbaritem');
 
@@ -22,17 +25,47 @@ function activate(context) {
   // Now provide the implementation of the command with  registerCommand
   // The commandId parameter must match the command field in package.json
   context.subscriptions.push(
-    vscode.commands.registerCommand('ipaddress.refreshIPAddresses', () => {
+    vscode.commands.registerTextEditorCommand(Commands.INSERT_IP_ADDRESS, (textEditor, edit) => {
       // The code you place here will be executed every time your command is executed
 
-      statusBarItem.refresh();
+      const entries =
+        NetworkInterfaceUtil.sortNetworkInterfaces(
+          NetworkInterfaceUtil.flattenNetworkInterfaces(os.networkInterfaces())
+        )
+          .map(entry => {
+            return {
+              label: entry.address,
+              detail: `${entry.interfaceName} (${entry.family})`,
+              address: entry.address
+            };
+          })
+          .valueSeq()
+          .toJS();
 
-      // Display a message box to the user
+      vscode.window.showQuickPick(
+        entries
+      ).then(entry => {
+        const address = entry.address;
+
+        textEditor.edit(edit => {
+          textEditor.selections.map(selection => {
+            const
+              start = selection.start,
+              end = selection.end;
+
+            if (start.line === end.line && start.character === end.character) {
+              edit.insert(start, address);
+            } else {
+              edit.replace(selection, address);
+            }
+          });
+        });
+      });
     })
   );
 
   context.subscriptions.push(
-    vscode.commands.registerCommand('ipaddress.showNextIPAddress', () => {
+    vscode.commands.registerCommand(Commands.SHOW_NEXT_IP_ADDRESS, () => {
       statusBarItem.nextAddress();
     })
   );

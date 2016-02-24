@@ -11,15 +11,15 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:ipaddress.insertIPAddress",
+    "onCommand:ipAddress.insertIPAddress",
     "*"
   ],
   "main": "./extension",
   "contributes": {
     "commands": [
       {
-        "command": "ipaddress.insertIPAddress",
-        "title": "IP Address: Insert an IP address"
+        "command": "ipAddress.insertIPAddress",
+        "title": "Insert IP Address"
       }
     ]
   },

@@ -72,4 +72,16 @@ suite('Network interface util', function () {
       actual
     );
   });
+
+  test('Sort addresses', function () {
+    const
+      networkInterfaces = getNetworkInterfaces(),
+      actual = NetworkInterfaceUtil.sortNetworkInterfaces(networkInterfaces).valueSeq().toJS(),
+      expected = JSON.parse(readFileSync(path.resolve(testFilesPath, 'sort-baseline.json'), 'utf-8'));
+
+    assert.deepEqual(
+      expected,
+      actual
+    );
+  });
 });

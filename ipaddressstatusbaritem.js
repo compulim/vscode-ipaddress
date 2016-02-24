@@ -1,10 +1,10 @@
 'use strict';
 
 const
-  AUTO_DHCP_PATTERN = /^169\.254\./,
   REFRESH_INTERVAL = 5000;
 
 const
+  Commands = require('./commands'),
   NetworkInterfaceUtil = require('./networkinterfaceutil'),
   os = require('os'),
   vscode = require('vscode');
@@ -16,7 +16,7 @@ class IPAddressStatusBarItem {
   constructor() {
     this._selectedInterfaceName = 0;
     this._statusBarItem = window.createStatusBarItem(vscode.StatusBarAlignment.Right);
-    this._statusBarItem.command = 'ipaddress.showNextIPAddress';
+    this._statusBarItem.command = Commands.SHOW_NEXT_IP_ADDRESS;
     this._statusBarItem.show();
 
     this.refresh();
@@ -35,26 +35,9 @@ class IPAddressStatusBarItem {
   }
 
   getNetworkInterfaces() {
-    return NetworkInterfaceUtil.flattenNetworkInterfaces(os.networkInterfaces()).sort((x, y) => {
-      let
-        vx = x.family,
-        vy = y.family;
-
-      if (vx === vy) {
-        vx = x.address;
-        vy = y.address;
-
-        if (AUTO_DHCP_PATTERN.test(vx)) {
-          vx = '9' + vx;
-        }
-
-        if (AUTO_DHCP_PATTERN.test(vy)) {
-          vy = '9' + vy;
-        }
-      }
-
-      return vx > vy ? 1 : vx < vy ? -1 : 0;
-    });
+    return NetworkInterfaceUtil.sortNetworkInterfaces(
+      NetworkInterfaceUtil.flattenNetworkInterfaces(os.networkInterfaces())
+    );
   }
 
   fetchNetworkInterfaces() {
