@@ -1,0 +1,32 @@
+{
+  "name": "vscode-ipaddress",
+  "displayName": "Shows and Inserts IP address",
+  "description": "Shows and inserts your IP address in Visual Studio Code",
+  "version": "0.0.1",
+  "publisher": "Compulim",
+  "engines": {
+    "vscode": "^0.10.1"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:ipaddress.insertIPAddress",
+    "*"
+  ],
+  "main": "./extension",
+  "contributes": {
+    "commands": [
+      {
+        "command": "ipaddress.insertIPAddress",
+        "title": "IP Address: Insert an IP address"
+      }
+    ]
+  },
+  "devDependencies": {
+    "vscode": "0.11.x"
+  },
+  "dependencies": {
+    "immutable": "^3.7.6"
+  }
+}
