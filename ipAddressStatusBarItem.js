@@ -5,7 +5,7 @@ const
 
 const
   Commands = require('./commands'),
-  NetworkInterfaceUtil = require('./networkinterfaceutil'),
+  NetworkInterfaceUtil = require('./networkInterfaceUtil'),
   os = require('os'),
   vscode = require('vscode');
 

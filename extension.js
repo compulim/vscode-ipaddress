@@ -4,10 +4,10 @@
 // Import the module and reference it with the alias vscode in your code below
 const
   Commands = require('./commands'),
-  NetworkInterfaceUtil = require('./networkinterfaceutil'),
+  NetworkInterfaceUtil = require('./networkInterfaceUtil'),
   os = require('os'),
   vscode = require('vscode'),
-  IPAddressStatusBarItem = require('./ipaddressstatusbaritem');
+  IPAddressStatusBarItem = require('./ipAddressStatusBarItem');
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
