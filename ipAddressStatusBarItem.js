@@ -3,6 +3,7 @@
 const REFRESH_INTERVAL = 5000;
 
 const Commands             = require('./commands');
+const freshPublicIP        = require('./freshPublicIP')({ autoRefresh: false });
 const NetworkInterfaceUtil = require('./networkInterfaceUtil');
 const os                   = require('os');
 const vscode               = require('vscode');
@@ -32,7 +33,16 @@ class IPAddressStatusBarItem {
   }
 
   getNetworkInterfaces() {
-    return NetworkInterfaceUtil.flattenNetworkInterfaces(os.networkInterfaces());
+    const networkInterfaces = os.networkInterfaces();
+
+    networkInterfaces['public'] = [{
+      address: freshPublicIP.address(),
+      // address: Promise.resolve('123.45.67.89'),
+      family : 'IPv4',
+      type   : 'fresh'
+    }];
+
+    return NetworkInterfaceUtil.flattenNetworkInterfaces(networkInterfaces);
   }
 
   fetchNetworkInterfaces() {
@@ -51,7 +61,7 @@ class IPAddressStatusBarItem {
     if (networkInterface) {
       const addressesOfSameInterface = NetworkInterfaceUtil.getAddresses(this._networkInterfaces, networkInterface.interfaceName).sort(addr => addr.family);
 
-      this._statusBarItem.text = `$(globe) ${ networkInterface.address }`;
+      this._statusBarItem.text = `$(home) ${ networkInterface.address }`;
       this._statusBarItem.tooltip = `${ networkInterface.interfaceName }\n${ (networkInterface.mac || '').toUpperCase() }\n\n${ addressesOfSameInterface.valueSeq().map(a => `(${ a.family }) ${ a.address }`).toJS().join('\n') }`;
     } else {
       this._statusBarItem.text = `$(unplug)`;

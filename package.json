@@ -48,6 +48,7 @@
     "@types/mocha": "^2.2.32"
   },
   "dependencies": {
-    "immutable": "^3.7.6"
+    "immutable": "^3.7.6",
+    "public-ip": "^2.3.3"
   }
 }

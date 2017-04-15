@@ -23,24 +23,32 @@ function flattenNetworkInterfaces(networkInterfaces) {
         } else {
           return flattened.set(
             `${ interfaceName } (${ entry.family })`,
-            {
+            Map({
               interfaceName,
               address: entry.address,
               family : entry.family,
               mac    : entry.mac,
-              netmask: entry.netmask
-            }
+              netmask: entry.netmask,
+              type   : 'internal'
+            })
           );
         }
       }, flattened);
-    }, Map())
+    }, Map());
+}
+
+function sortNetworkInterfaces(networkInterfaces) {
+  return networkInterfaces
     .sort((x, y) => {
-      let vx = x.family;
-      let vy = y.family;
+      let vx = x.get('family');
+      let vy = y.get('family');
+
+      vx = (vx === 'IPv4' ? 0 : 2) + (x.get('type') === 'public' ? 1 : 0);
+      vy = (vy === 'IPv4' ? 0 : 2) + (y.get('type') === 'public' ? 1 : 0);
 
       if (vx === vy) {
-        vx = x.address;
-        vy = y.address;
+        vx = x.get('address');
+        vy = y.get('address');
 
         if (AUTO_DHCP_PATTERN.test(vx)) {
           vx = '9' + vx;
@@ -55,12 +63,13 @@ function flattenNetworkInterfaces(networkInterfaces) {
     });
 }
 
-function getAddresses(networkInterfaces, interfaceName) {
-  return networkInterfaces.filter(networkInterface => networkInterface.interfaceName === interfaceName);
-}
+// function getAddresses(networkInterfaces, interfaceName) {
+//   return networkInterfaces.filter(networkInterface => networkInterface.get('interfaceName') === interfaceName);
+// }
 
 module.exports = {
   flattenNetworkInterfaces,
-  getAddresses,
-  getNextInterfaceName
+  // getAddresses,
+  getNextInterfaceName,
+  sortNetworkInterfaces
 };
