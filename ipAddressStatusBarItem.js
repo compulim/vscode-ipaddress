@@ -32,9 +32,7 @@ class IPAddressStatusBarItem {
   }
 
   getNetworkInterfaces() {
-    return NetworkInterfaceUtil.sortNetworkInterfaces(
-      NetworkInterfaceUtil.flattenNetworkInterfaces(os.networkInterfaces())
-    );
+    return NetworkInterfaceUtil.flattenNetworkInterfaces(os.networkInterfaces());
   }
 
   fetchNetworkInterfaces() {

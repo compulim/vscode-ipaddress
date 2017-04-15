@@ -13,57 +13,54 @@ function getNextInterfaceName(networkInterfaces, currentInterfaceName) {
 }
 
 function flattenNetworkInterfaces(networkInterfaces) {
-  return Object.keys(networkInterfaces).reduce((flattened, interfaceName) => {
-    const networkInterface = networkInterfaces[interfaceName];
+  return Object.keys(networkInterfaces)
+    .reduce((flattened, interfaceName) => {
+      const networkInterface = networkInterfaces[interfaceName];
 
-    return networkInterface.reduce((flattened, entry) => {
-      if (entry.internal) {
-        return flattened;
-      } else {
-        return flattened.set(
-          `${ interfaceName } (${ entry.family })`,
-          {
-            interfaceName,
-            address: entry.address,
-            family : entry.family,
-            mac    : entry.mac,
-            netmask: entry.netmask
-          }
-        );
+      return networkInterface.reduce((flattened, entry) => {
+        if (entry.internal) {
+          return flattened;
+        } else {
+          return flattened.set(
+            `${ interfaceName } (${ entry.family })`,
+            {
+              interfaceName,
+              address: entry.address,
+              family : entry.family,
+              mac    : entry.mac,
+              netmask: entry.netmask
+            }
+          );
+        }
+      }, flattened);
+    }, Map())
+    .sort((x, y) => {
+      let vx = x.family;
+      let vy = y.family;
+
+      if (vx === vy) {
+        vx = x.address;
+        vy = y.address;
+
+        if (AUTO_DHCP_PATTERN.test(vx)) {
+          vx = '9' + vx;
+        }
+
+        if (AUTO_DHCP_PATTERN.test(vy)) {
+          vy = '9' + vy;
+        }
       }
-    }, flattened);
-  }, Map()).sortBy(entry => `${ entry.interfaceName } ${ entry.family }`);
+
+      return vx > vy ? 1 : vx < vy ? -1 : 0;
+    });
 }
 
 function getAddresses(networkInterfaces, interfaceName) {
   return networkInterfaces.filter(networkInterface => networkInterface.interfaceName === interfaceName);
 }
 
-function sortNetworkInterfaces(networkInterfaces) {
-  return networkInterfaces.sort((x, y) => {
-    let vx = x.family;
-    let vy = y.family;
-
-    if (vx === vy) {
-      vx = x.address;
-      vy = y.address;
-
-      if (AUTO_DHCP_PATTERN.test(vx)) {
-        vx = '9' + vx;
-      }
-
-      if (AUTO_DHCP_PATTERN.test(vy)) {
-        vy = '9' + vy;
-      }
-    }
-
-    return vx > vy ? 1 : vx < vy ? -1 : 0;
-  });
-}
-
 module.exports = {
   flattenNetworkInterfaces,
   getAddresses,
-  getNextInterfaceName,
-  sortNetworkInterfaces
+  getNextInterfaceName
 };
