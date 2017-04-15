@@ -1,16 +1,13 @@
 'use strict';
 
-const
-  REFRESH_INTERVAL = 5000;
+const REFRESH_INTERVAL = 5000;
 
-const
-  Commands = require('./commands'),
-  NetworkInterfaceUtil = require('./networkInterfaceUtil'),
-  os = require('os'),
-  vscode = require('vscode');
+const Commands             = require('./commands');
+const NetworkInterfaceUtil = require('./networkInterfaceUtil');
+const os                   = require('os');
+const vscode               = require('vscode');
 
-const
-  window = vscode.window;
+const { window } = vscode;
 
 class IPAddressStatusBarItem {
   constructor() {
@@ -56,8 +53,8 @@ class IPAddressStatusBarItem {
     if (networkInterface) {
       const addressesOfSameInterface = NetworkInterfaceUtil.getAddresses(this._networkInterfaces, networkInterface.interfaceName).sort(addr => addr.family);
 
-      this._statusBarItem.text = `$(globe) ${networkInterface.address}`;
-      this._statusBarItem.tooltip = `${networkInterface.interfaceName}\n${(networkInterface.mac || '').toUpperCase()}\n\n${addressesOfSameInterface.valueSeq().map(a => `(${a.family}) ${a.address}`).toJS().join('\n')}`;
+      this._statusBarItem.text = `$(globe) ${ networkInterface.address }`;
+      this._statusBarItem.tooltip = `${ networkInterface.interfaceName }\n${ (networkInterface.mac || '').toUpperCase() }\n\n${ addressesOfSameInterface.valueSeq().map(a => `(${ a.family }) ${ a.address }`).toJS().join('\n') }`;
     } else {
       this._statusBarItem.text = `$(unplug)`;
       this._statusBarItem.tooltip = null;

@@ -5,10 +5,9 @@ const AUTO_DHCP_PATTERN = /^169\.254\./;
 const Map = require('immutable').Map;
 
 function getNextInterfaceName(networkInterfaces, currentInterfaceName) {
-  const
-    interfaceNames = networkInterfaces.keySeq(),
-    currentIndex = interfaceNames.indexOf(currentInterfaceName),
-    nextIndex = ~currentIndex ? currentIndex + 1 : 1;
+  const interfaceNames = networkInterfaces.keySeq();
+  const currentIndex   = interfaceNames.indexOf(currentInterfaceName);
+  const nextIndex      = ~currentIndex ? currentIndex + 1 : 1;
 
   return interfaceNames.get(nextIndex < networkInterfaces.size ? nextIndex : 0);
 }
@@ -22,18 +21,18 @@ function flattenNetworkInterfaces(networkInterfaces) {
         return flattened;
       } else {
         return flattened.set(
-          `${interfaceName} (${entry.family})`,
+          `${ interfaceName } (${ entry.family })`,
           {
             interfaceName,
             address: entry.address,
-            netmask: entry.netmask,
-            family: entry.family,
-            mac: entry.mac
+            family : entry.family,
+            mac    : entry.mac,
+            netmask: entry.netmask
           }
         );
       }
     }, flattened);
-  }, Map()).sortBy(entry => `${entry.interfaceName} ${entry.family}`);
+  }, Map()).sortBy(entry => `${ entry.interfaceName } ${ entry.family }`);
 }
 
 function getAddresses(networkInterfaces, interfaceName) {
@@ -42,9 +41,8 @@ function getAddresses(networkInterfaces, interfaceName) {
 
 function sortNetworkInterfaces(networkInterfaces) {
   return networkInterfaces.sort((x, y) => {
-    let
-      vx = x.family,
-      vy = y.family;
+    let vx = x.family;
+    let vy = y.family;
 
     if (vx === vy) {
       vx = x.address;
@@ -63,7 +61,9 @@ function sortNetworkInterfaces(networkInterfaces) {
   });
 }
 
-module.exports.flattenNetworkInterfaces = flattenNetworkInterfaces;
-module.exports.getAddresses = getAddresses;
-module.exports.getNextInterfaceName = getNextInterfaceName;
-module.exports.sortNetworkInterfaces = sortNetworkInterfaces;
+module.exports = {
+  flattenNetworkInterfaces,
+  getAddresses,
+  getNextInterfaceName,
+  sortNetworkInterfaces
+};

@@ -2,12 +2,11 @@
 
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-const
-  Commands = require('./commands'),
-  NetworkInterfaceUtil = require('./networkInterfaceUtil'),
-  os = require('os'),
-  vscode = require('vscode'),
-  IPAddressStatusBarItem = require('./ipAddressStatusBarItem');
+const Commands               = require('./commands');
+const IPAddressStatusBarItem = require('./ipAddressStatusBarItem');
+const NetworkInterfaceUtil   = require('./networkInterfaceUtil');
+const os                     = require('os');
+const vscode                 = require('vscode');
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -32,14 +31,12 @@ function activate(context) {
         NetworkInterfaceUtil.sortNetworkInterfaces(
           NetworkInterfaceUtil.flattenNetworkInterfaces(os.networkInterfaces())
         )
-          .map(entry => {
-            return {
-              label: entry.address,
-              description: entry.family,
-              detail: entry.interfaceName,
-              address: entry.address
-            };
-          })
+          .map(entry => ({
+            address    : entry.address,
+            description: entry.family,
+            detail     : entry.interfaceName,
+            label      : entry.address
+          }))
           .valueSeq()
           .toJS();
 
@@ -56,9 +53,7 @@ function activate(context) {
 
         textEditor.edit(edit => {
           textEditor.selections.map(selection => {
-            const
-              start = selection.start,
-              end = selection.end;
+            const { start, end } = selection;
 
             if (start.line === end.line && start.character === end.character) {
               edit.insert(start, address);
