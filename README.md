@@ -21,7 +21,16 @@ You can also modify keyboard shortcut with JSON below.
 }
 ```
 
+### Public IP address
+
+Public IP address is obtained from OpenDNS via [`check-ip`](https://www.npmjs.com/package/public-ip) and updated every minute.
+
+Query public IP address will require sending packets to the Internet and we want to minimize the network traffic. If the public IP address is not shown in the status bar, we will not update the IP address. And even if it is shown, we will not update it more than once every minute.
+
 ## Change log
+* 1.0.0 (2017-04-15)
+  * [public ip] Get public IP address from OpenDNS (via [`check-ip`](https://www.npmjs.com/package/public-ip))
+  * [vscode] Updated dependency to `vscode^1.11.0`
 * 0.0.1 (2016-02-24): First public release
 
 ## Contributions
