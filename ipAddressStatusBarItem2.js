@@ -43,6 +43,18 @@ class IPAddressStatusBarItem {
   nextAddress() {
     this._interfaces.next();
   }
+
+  currentAddress() {
+    const networkInterface = this._interfaces.current();
+
+    if (networkInterface) {
+      const address = networkInterface.get('address');
+      return address;
+    } else {
+      return null;
+    }
+
+
 }
 
 module.exports = IPAddressStatusBarItem;
