@@ -24,6 +24,27 @@ You can also modify keyboard shortcut with JSON below.
 }
 ```
 
+You can alsoe insert the selected IP address into a configuration from `launch.json` or `tasks.json` using [input variables](https://code.visualstudio.com/docs/editor/variables-reference#_input-variables). For instance here for a `tasks.json` echoing the selection in the terminal:
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "echo selected host ip",
+      "type": "shell",
+      "command": "echo 'selected host ip ${input:hostIP}'"
+    },
+  ],
+  "inputs": [
+    {
+      "type": "command",
+      "id": "hostIP",
+      "command": "ipAddress.getSelectedIPAddress"
+    }
+  ]
+}
+```
+
 ### Public IP address
 
 Public IP address is obtained from OpenDNS via [`check-ip`](https://www.npmjs.com/package/public-ip) and updated every minute.

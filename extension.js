@@ -67,6 +67,12 @@ function activate(context) {
       statusBarItem.nextAddress();
     })
   );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand(Commands.GET_SELECTED_IP_ADDRESS, () => {
+      return statusBarItem.currentAddress();
+    })
+  );
 }
 
 exports.activate = activate;
